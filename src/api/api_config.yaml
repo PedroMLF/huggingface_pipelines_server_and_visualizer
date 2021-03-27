@@ -1,2 +1,0 @@
-task: "ner"
-model: "dslim/bert-base-NER"

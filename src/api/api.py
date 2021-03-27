@@ -24,18 +24,22 @@ logger.addHandler(console_handler)
 logger.setLevel(logging.DEBUG)
 
 # Initialize config
-root_path = os.path.dirname(os.path.abspath(__file__))
-config = OmegaConf.load(os.path.join(root_path, "api_config.yaml"))
+root_path = os.path.dirname(os.path.abspath(__file__)).split("src")[0]
+config = OmegaConf.load(os.path.join(root_path, "config.yaml"))
 
 # Initialize pipeline model
 pipeline = init_pipeline(config)
 
 # Define input types
-class TokenClassificationInput(BaseModel):
+class PredictInput(BaseModel):
     text: str
 
 
 @app.post("/predict/")
-async def predict_item(request: TokenClassificationInput):
+async def predict(request: PredictInput):
     output = pipeline(request.text)
-    return output
+    return {
+        "predictions": output,
+        "type": pipeline.pipeline_type,
+        "model": pipeline.model,
+    }
