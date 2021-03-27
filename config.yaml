@@ -1,2 +1,18 @@
-task: "ner"
-model: "dslim/bert-base-NER"
+task: "sentiment-analysis"
+model: "nlptown/bert-base-multilingual-uncased-sentiment"
+
+#model: "dslim/bert-base-NER"
+
+# tasks:
+#The task defining which pipeline will be returned. Currently accepted tasks are:
+#"feature-extraction": will return a FeatureExtractionPipeline.
+#"sentiment-analysis": will return a TextClassificationPipeline.
+#"ner": will return a TokenClassificationPipeline.
+#"question-answering": will return a QuestionAnsweringPipeline.
+#"fill-mask": will return a FillMaskPipeline.
+#"summarization": will return a SummarizationPipeline.
+#"translation_xx_to_yy": will return a TranslationPipeline.
+#"text2text-generation": will return a Text2TextGenerationPipeline.
+#"text-generation": will return a TextGenerationPipeline.
+#"zero-shot-classification:: will return a ZeroShotClassificationPipeline.
+#"conversational": will return a ConversationalPipeline.

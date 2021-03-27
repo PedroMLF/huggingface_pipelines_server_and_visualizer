@@ -23,7 +23,7 @@ class BasePipeline:
         return outputs
 
     def _get_np_keys(self, dictionary):
-        keys = [k for k,v in dictionary.items() if "numpy" in str(type(v))]
+        keys = [k for k, v in dictionary.items() if "numpy" in str(type(v))]
         return keys
 
     def _map_np_keys(self, dictionary):
