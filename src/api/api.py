@@ -1,10 +1,12 @@
 import logging
 import os
+from typing import Dict, List, Union
 
 from fastapi import FastAPI
 from omegaconf import OmegaConf
 from pydantic import BaseModel
 
+from src.custom_types import FinalPrediction
 from src.pipelines.utils import init_pipeline
 
 app = FastAPI()
@@ -36,7 +38,9 @@ class PredictInput(BaseModel):
 
 
 @app.post("/predict/")
-async def predict(request: PredictInput):
+async def predict(
+    request: PredictInput,
+) -> Dict[str, Union[str, List[FinalPrediction]]]:
     output = pipeline(request.text)
     return {
         "predictions": output,
