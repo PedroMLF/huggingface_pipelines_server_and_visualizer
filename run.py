@@ -23,9 +23,7 @@ if __name__ == "__main__":
 
     # Set logger
     logger = logging.getLogger("logger")
-    log_formatter = logging.Formatter(
-        "[%(asctime)s] - %(name)s - %(levelname)s - %(message)s"
-    )
+    log_formatter = logging.Formatter("[%(asctime)s] - %(name)s - %(levelname)s - %(message)s")
 
     # Set logger - console handler
     console_handler = logging.StreamHandler()

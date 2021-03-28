@@ -1,7 +1,6 @@
-task: "sentiment-analysis"
-model: "nlptown/bert-base-multilingual-uncased-sentiment"
-
-#model: "dslim/bert-base-NER"
+task: "ner"
+#model: "nlptown/bert-base-multilingual-uncased-sentiment"
+model: "dslim/bert-base-NER"
 
 # tasks:
 #The task defining which pipeline will be returned. Currently accepted tasks are:

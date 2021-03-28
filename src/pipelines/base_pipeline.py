@@ -24,9 +24,7 @@ class BasePipeline:
     def __call__(self, text: str):
         raise NotImplementedError
 
-    def _map_all_np_keys(
-        self, outputs: List[RawPrediction]
-    ) -> List[FinalPrediction]:
+    def _map_all_np_keys(self, outputs: List[RawPrediction]) -> List[FinalPrediction]:
         if not self.np_keys:
             self.np_keys = self._get_np_keys(outputs[0])
         if self.np_keys:
