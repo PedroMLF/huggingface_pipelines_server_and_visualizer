@@ -39,6 +39,18 @@ class PredictInput(BaseModel):
 async def predict(
     request: PredictInput,
 ) -> Dict[str, Union[str, List[FinalPrediction]]]:
+    """Returns dictionary with a list of final predictions, and information
+    about the type of pipeline and model.
+
+    Args:
+        request (PredictInput): Pydantic class.
+
+    Returns:
+        Dict[str, Union[str, List[FinalPrediction]]]: Dictionary with keys
+        "predictions", "type", and "model", with corresponding values being a
+        list of final predictions, the type of pipeline (e.g. "Text
+        Classification Pipeline"), and model (e.g. "dslim/bert-base-NER").
+    """
     output = pipeline(request.text)
     return {
         "predictions": output,
