@@ -17,6 +17,18 @@ logger = logging.getLogger("logger")
 def init_pipeline(
     config: Union[DictConfig, ListConfig],
 ) -> Union[TextClassificationPipeline, TokenClassificationPipeline]:
+    """Initializes an HuggingFace pipeline.
+
+    Args:
+        config (Union[DictConfig, ListConfig]): OmegaConf config.
+
+    Raises:
+        NotImplementedError: Raises error when using a non-implemented task.
+
+    Returns:
+        Union[TextClassificationPipeline, TokenClassificationPipeline]:
+        Instance of "full" pipeline.
+    """
 
     if config.task == "ner":
         logger.info("Initializing Token Classification pipeline...")
