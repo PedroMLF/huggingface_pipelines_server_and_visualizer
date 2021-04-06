@@ -53,8 +53,8 @@ class BasePipeline:
         if not self.np_keys:
             self.np_keys = self._get_np_keys(outputs[0])
         if self.np_keys:
-            outputs = [self._map_np_keys(o) for o in outputs]
-        return outputs
+            processed_outputs = [self._map_np_keys(o) for o in outputs]
+        return processed_outputs
 
     def _get_np_keys(self, dictionary: RawPrediction) -> List[str]:
         """Returns keys of a dictionary that correspond to numpy types.

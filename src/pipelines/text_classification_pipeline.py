@@ -20,7 +20,7 @@ class TextClassificationPipeline(BasePipeline):
     def __call__(self, text: str) -> List[FinalPrediction]:
         """Returns list of dictionaries, each corresponding to a final
         prediction. It runs HuggingFace's corresponding pipeline, and maps
-        numpy types to regular types, when necessary. 
+        numpy types to regular types, when necessary.
 
         Args:
             text (str): Input text string.
