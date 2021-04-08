@@ -24,6 +24,9 @@ class BasePipeline:
         # Init pipeline
         self.pipeline = pipeline(task=self.task, model=self.model)
 
+        # Get tokenizer prefix
+        self.prefix = self.pipeline.tokenizer._tokenizer.decoder.prefix
+
         # Define numpy keys to be mapped
         self.np_keys: List[str] = []
 
