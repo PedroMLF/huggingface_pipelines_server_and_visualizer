@@ -1,0 +1,11 @@
+black
+fastapi
+gunicorn
+mypy
+nox
+omegaconf
+pydantic
+streamlit
+torch
+transformers
+uvicorn[standard]
