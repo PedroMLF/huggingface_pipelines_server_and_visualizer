@@ -1,5 +1,6 @@
 import json
 import requests
+from typing import Dict, List, Union
 
 import streamlit as st
 from spacy_streamlit import visualize_ner
@@ -10,29 +11,64 @@ from spacy.tokens import Span
 COLORS = ["#ef5350", "#ffee58", "#81c784", "#64b5f6", "#ba68c8", "#b0bec5"]
 
 
-def write_header():
+def write_header() -> None:
+    """Write streamlit web app header.
+    """
     st.title("Hugging Face Pipelines Web App")
 
 
-def text_input():
+def text_input() -> str:
+    """Generates text input box, that waits for an user input.
+
+    Returns:
+        str: User input string.
+    """
     text_input = st.text_input("Input a blob of text to be run through the API model.")
     return text_input
 
 
-def get_prediction(url: str, text: str):
+def get_prediction(url: str, text: str) -> List[Dict[str, Union[int, float, str]]]:
+    """Get prediction by calling the desired API endpoint using the
+    user's input.
+
+    Args:
+        url (str): API's post url.
+        text (str): User input string.
+
+    Returns:
+        FinalPrediction: List of dictionaries, each corresponding
+            to a final prediction.
+    """
     data = json.dumps({"text": text})
     response = requests.post(url, data=data)
     json_response = response.json()
     return json_response
 
 
-def print_pipeline_info(pipeline_type: str, model: str):
+def print_pipeline_info(pipeline_type: str, model: str) -> None:
+    """Prints the pipeline type (e.g. Token Classification Pipeline)
+    and the model being used (e.g. bert-base).
+
+    Args:
+        pipeline_type (str): Type of pipeline.
+        model (str): Hugging Face model.
+    """
     st.write("## Pipeline Info")
     st.write("**Pipeline Type: **", pipeline_type)
     st.write("**Loaded Model: **", model)
 
 
-def print_predictions(text: str, pipeline_type: str, predictions):
+def print_predictions(text: str, pipeline_type: str, predictions: List[Dict[str, Union[int, float, str]]]) -> None:
+    """Prints each prediction and a prettier version depending on the
+    pipeline_type. For the "Token Classification Pipeline" it uses
+    spacy_streamlit's visualizer_ner function.
+
+    Args:
+        text (str): User input string.
+        pipeline_type (str): Type of pipeline.
+        predictions (List[Dict[str, Union[int, float, str]]]):  List of
+        dictionaries, each corresponding to a final prediction.
+    """
     st.write("## Predictions")
 
     if pipeline_type == "Token Classification Pipeline":
@@ -72,10 +108,12 @@ def print_predictions(text: str, pipeline_type: str, predictions):
             )
         doc.set_ents(spans)
 
-    # Visualize predictions
-    if predictions:
+        # Plot using spacy_streamlit
         colors = {k: v for k, v in zip(labels, COLORS[: len(labels)])}
         visualize_ner(doc, labels=labels, show_table=False, colors=colors)
+
+    # Visualize predictions
+    if predictions:
         st.write("### Details")
         for v in predictions:
             st.write(v)
@@ -83,7 +121,7 @@ def print_predictions(text: str, pipeline_type: str, predictions):
         st.write("No predictions")
 
 
-def main(url):
+def main(url) -> None:
     write_header()
     text = text_input()
     if text:
