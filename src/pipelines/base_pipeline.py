@@ -24,11 +24,30 @@ class BasePipeline:
         # Init pipeline
         self.pipeline = pipeline(task=self.task, model=self.model)
 
+        # Get tokenizer
+        self.tokenizer = self.pipeline.tokenizer
+
         # Get tokenizer prefix
         self.prefix = self.pipeline.tokenizer._tokenizer.decoder.prefix
 
         # Define numpy keys to be mapped
         self.np_keys: List[str] = []
+
+    def tokenize_text(self, text: str) -> List[str]:
+        """Tokenize text, by first getting the input_ids, converting them into
+        tokens, and then joining together the subtokens.
+
+        Args:
+            text (str): User input text.
+
+        Returns:
+            List[str]: List of tokens.
+        """
+        input_ids = self.tokenizer(text)["input_ids"]
+        tokens = self.tokenizer.convert_ids_to_tokens(input_ids, skip_special_tokens=True)
+        # TODO: Make this robust to more models, not only BERT models.
+        string = (" ".join(tokens)).replace(" {}".format(self.prefix), "")
+        return string.split()
 
     def __call__(self, text: str):
         """__call__ method to be implemented by subclasses.
