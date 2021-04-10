@@ -12,8 +12,7 @@ COLORS = ["#ef5350", "#ffee58", "#81c784", "#64b5f6", "#ba68c8", "#b0bec5"]
 
 
 def write_header() -> None:
-    """Write streamlit web app header.
-    """
+    """Write streamlit web app header."""
     st.title("Hugging Face Pipelines Web App")
 
 
@@ -58,7 +57,9 @@ def print_pipeline_info(pipeline_type: str, model: str) -> None:
     st.write("**Loaded Model: **", model)
 
 
-def print_predictions(text: str, pipeline_type: str, predictions: List[Dict[str, Union[int, float, str]]]) -> None:
+def print_predictions(
+    text: str, pipeline_type: str, predictions: List[Dict[str, Union[int, float, str]]]
+) -> None:
     """Prints each prediction and a prettier version depending on the
     pipeline_type. For the "Token Classification Pipeline" it uses
     spacy_streamlit's visualizer_ner function.
@@ -69,48 +70,53 @@ def print_predictions(text: str, pipeline_type: str, predictions: List[Dict[str,
         predictions (List[Dict[str, Union[int, float, str]]]):  List of
         dictionaries, each corresponding to a final prediction.
     """
-    st.write("## Predictions")
 
-    if pipeline_type == "Token Classification Pipeline":
-        # Get words and init spacy's Doc
-        words = text.split()
-        doc = Doc(Vocab(strings=words), words=words)
+    if predictions:
+        st.write("## Predictions")
 
-        # Get ranges mapping
-        i = -1
-        starts = {}
-        ends = {}
-        for ix, w in enumerate(words):
-            # Sum +1 to the start since we split by whitespace
-            starts[i + 1] = ix
-            # Sum +1 to the end because ranges are not inclusive
-            inc = 0 if ix == len(words)-1 else 1
-            ends[i + len(w) + inc] = ix
-            i = i + len(w) + 1
+        if pipeline_type == "Token Classification Pipeline":
+            # Get words and init spacy's Doc
+            words = text.split()
+            doc = Doc(Vocab(strings=words), words=words)
 
-        # Set entities in spacy's doc, and collect labels
-        labels = []
-        spans = []
-        for prediction in predictions:
-            if prediction["start"] not in starts or prediction["end"] not in ends:
-                print("Skipping: ", prediction)
-                continue
-            label = prediction["entity_group"]
-            if label not in labels:
-                labels.append(label)
-            spans.append(
-                Span(
-                    doc,
-                    start=starts[prediction["start"]],
-                    end=ends[prediction["end"]] + 1,
-                    label=label,
+            # Get ranges mapping
+            i = -1
+            starts: Dict[int, int] = {}
+            ends: Dict[int, int] = {}
+            for ix, w in enumerate(words):
+                # Sum +1 to the start since we split by whitespace
+                starts[i + 1] = ix
+                # Sum +1 to the end because ranges are not inclusive
+                inc = 0 if ix == len(words) - 1 else 1
+                ends[i + len(w) + inc] = ix
+                i = i + len(w) + 1
+
+            # Set entities in spacy's doc, and collect labels
+            labels = []
+            spans = []
+            for prediction in predictions:
+                if prediction["start"] not in starts or prediction["end"] not in ends:
+                    print("Skipping: ", prediction)
+                    continue
+                label = prediction["entity_group"]
+                if label not in labels:
+                    labels.append(label)
+                spans.append(
+                    Span(
+                        doc,
+                        start=starts[prediction["start"]],
+                        end=ends[prediction["end"]] + 1,
+                        label=label,
+                    )
                 )
-            )
-        doc.set_ents(spans)
+            doc.set_ents(spans)
 
-        # Plot using spacy_streamlit
-        colors = {k: v for k, v in zip(labels, COLORS[: len(labels)])}
-        visualize_ner(doc, labels=labels, show_table=False, colors=colors)
+            # Plot using spacy_streamlit
+            colors = {k: v for k, v in zip(labels, COLORS[: len(labels)])}
+            visualize_ner(doc, labels=labels, show_table=False, colors=colors)
+
+        elif pipeline_type == "Text Classification Pipeline":
+            st.write("{} -> Prediction: {}".format(text))
 
     # Visualize predictions
     if predictions:
