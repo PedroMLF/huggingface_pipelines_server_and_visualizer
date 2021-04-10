@@ -58,7 +58,10 @@ def print_pipeline_info(pipeline_type: str, model: str) -> None:
 
 
 def print_predictions(
-    text: str, pipeline_type: str, predictions: List[Dict[str, Union[int, float, str]]]
+    text: str,
+    pipeline_type: str,
+    predictions: List[Dict[str, Union[int, float, str]]],
+    tokens: List[str],
 ) -> None:
     """Prints each prediction and a prettier version depending on the
     pipeline_type. For the "Token Classification Pipeline" it uses
@@ -75,21 +78,18 @@ def print_predictions(
         st.write("## Predictions")
 
         if pipeline_type == "Token Classification Pipeline":
-            # Get words and init spacy's Doc
-            words = text.split()
-            doc = Doc(Vocab(strings=words), words=words)
+            # Init spacy's Doc
+            doc = Doc(Vocab(strings=tokens), words=tokens)
 
             # Get ranges mapping
+            starts = {}
+            ends = {}
             i = -1
-            starts: Dict[int, int] = {}
-            ends: Dict[int, int] = {}
-            for ix, w in enumerate(words):
-                # Sum +1 to the start since we split by whitespace
-                starts[i + 1] = ix
-                # Sum +1 to the end because ranges are not inclusive
-                inc = 0 if ix == len(words) - 1 else 1
-                ends[i + len(w) + inc] = ix
-                i = i + len(w) + 1
+            for ix, token in enumerate(tokens):
+                start = text.find(token, i + 1)
+                i = start
+                starts[start] = ix
+                ends[start + len(token)] = ix
 
             # Set entities in spacy's doc, and collect labels
             labels = []
@@ -137,6 +137,7 @@ def main(url) -> None:
             text=text,
             pipeline_type=response["type"],
             predictions=response["predictions"],
+            tokens=response["tokens"],
         )
 
 
