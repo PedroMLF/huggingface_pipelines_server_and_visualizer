@@ -38,7 +38,7 @@ class PredictInput(BaseModel):
 @app.post("/predict/")
 async def predict(
     request: PredictInput,
-) -> Dict[str, Union[str, List[FinalPrediction]]]:
+) -> Dict[str, Union[str, List[str], List[FinalPrediction]]]:
     """Returns dictionary with a list of final predictions, and information
     about the type of pipeline and model.
 
@@ -46,14 +46,17 @@ async def predict(
         request (PredictInput): Pydantic class.
 
     Returns:
-        Dict[str, Union[str, List[FinalPrediction]]]: Dictionary with keys
-        "predictions", "type", and "model", with corresponding values being a
-        list of final predictions, the type of pipeline (e.g. "Text
-        Classification Pipeline"), and model (e.g. "dslim/bert-base-NER").
+        Dict[str, Union[str, List[str], List[FinalPrediction]]]: Dictionary
+        with keys "predictions", "tokens", "type", and "model", with the
+        corresponding values being a list of final predictions, a list of
+        tokens, the type of pipeline (e.g. "Text Classification Pipeline"),
+        and model (e.g. "dslim/bert-base-NER").
     """
     output = pipeline(request.text)
+    tokens = pipeline.tokenize_text(request.text)
     return {
         "predictions": output,
+        "tokens": tokens,
         "type": pipeline.pipeline_type,
         "model": pipeline.model,
     }
