@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 from omegaconf import OmegaConf
 
 from src.pipelines.base_pipeline import BasePipeline
@@ -23,6 +24,10 @@ class TestBaselinePipeline:
 
     def test_prefix_is_correct(self):
         assert self.pipeline.prefix == "##"
+
+    def test_call_raises_not_implemented_error(self):
+        with pytest.raises(NotImplementedError):
+            self.pipeline("x")
 
     def test_tokenize_text(self):
         assert self.pipeline.tokenize_text("Example sentence!") == ["Example", "sentence", "!"]
