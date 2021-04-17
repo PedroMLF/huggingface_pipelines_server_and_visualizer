@@ -116,7 +116,7 @@ def print_predictions(
             visualize_ner(doc, labels=labels, show_table=False, colors=colors)
 
         elif pipeline_type == "Text Classification Pipeline":
-            st.write("{} -> Prediction: {}".format(text))
+            st.write("\"_{}_\" - **Prediction:** {}".format(text, predictions[0]["label"]))
 
     # Visualize predictions
     if predictions:
@@ -127,17 +127,29 @@ def print_predictions(
         st.write("No predictions")
 
 
-def main(url) -> None:
+def main(predict_endpoint: str, tokenize_endpoint: str) -> None:
     write_header()
     text = text_input()
+
+    pipeline_needs_tokens = ["Token Classification Pipeline"]
+
     if text:
-        response = get_prediction(url, text)
-        print_pipeline_info(pipeline_type=response["type"], model=response["model"])
+        prediction_response = get_prediction(predict_endpoint, text)
+        pipeline_type = prediction_response["type"]
+        predictions = prediction_response["predictions"]
+        model = prediction_response["model"]
+        print_pipeline_info(pipeline_type=pipeline_type, model=model)
+
+        # Call tokenize endpoint when necessary
+        if pipeline_type in pipeline_needs_tokens:
+            tokenize_response = get_prediction(tokenize_endpoint, text)
+            tokens = tokenize_response["tokens"]
+
         print_predictions(
             text=text,
-            pipeline_type=response["type"],
-            predictions=response["predictions"],
-            tokens=response["tokens"],
+            pipeline_type=pipeline_type,
+            predictions=predictions,
+            tokens=tokens if pipeline_type in pipeline_needs_tokens else None,
         )
 
 
@@ -145,4 +157,6 @@ if __name__ == "__main__":
     ip = "127.0.0.1"
     port = "8000"
     url_base = "http://{}:{}/{}/"
-    main(url=url_base.format(ip, port, "predict"))
+    predict_endpoint = url_base.format(ip, port, "predict")
+    tokenize_endpoint = url_base.format(ip, port, "tokenize")
+    main(predict_endpoint=predict_endpoint, tokenize_endpoint=tokenize_endpoint)
