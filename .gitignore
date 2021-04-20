@@ -131,3 +131,4 @@ dmypy.json
 # -- ADDED --
 .vscode/
 .mypy_cache/
+notes.md
