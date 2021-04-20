@@ -13,7 +13,7 @@ COLORS = ["#ef5350", "#ffee58", "#81c784", "#64b5f6", "#ba68c8", "#b0bec5"]
 
 def write_header() -> None:
     """Write streamlit web app header."""
-    st.title("Hugging Face Pipelines Web App")
+    st.title("Hugging Face Pipelines Visualizer")
 
 
 def text_input() -> str:
@@ -22,7 +22,7 @@ def text_input() -> str:
     Returns:
         str: User input string.
     """
-    text_input = st.text_input("Input a blob of text to be run through the API model.")
+    text_input = st.text_input("Input a blob of text to be run through the API.")
     return text_input
 
 
@@ -116,7 +116,7 @@ def print_predictions(
             visualize_ner(doc, labels=labels, show_table=False, colors=colors)
 
         elif pipeline_type == "Text Classification Pipeline":
-            st.write("\"_{}_\" - **Prediction:** {}".format(text, predictions[0]["label"]))
+            st.write('"_{}_" - **Prediction:** {}'.format(text, predictions[0]["label"]))
 
     # Visualize predictions
     if predictions:

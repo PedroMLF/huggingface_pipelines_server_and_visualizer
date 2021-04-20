@@ -15,7 +15,7 @@ pipeline = init_pipeline(config)
 
 client = TestClient(app)
 
-
+# Make tests async: https://fastapi.tiangolo.com/advanced/async-tests/
 def test_predict():
     response = client.post(
         "/predict/",
