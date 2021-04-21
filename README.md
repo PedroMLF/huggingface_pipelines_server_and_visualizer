@@ -1,9 +1,5 @@
-<p align="center">
-    <font size="8">
-        <strong>Hugging Face Pipelines Server and Visualizer</strong>
-    </font>
-    <br>
-<p>
+# Hugging Face Pipelines Server and Visualizer
+
 
 ### Description
 
@@ -40,7 +36,7 @@ The goal of this project is to offer a simple local server and visualization too
 
 ### Visualizer
 
-- Implemented with [streamlit](https://streamlit.io/), and with different visualizations according to the type of pipeline.
+- Implemented with [Streamlit](https://streamlit.io/), and with different visualizations according to the type of pipeline.
 - Example for the `TokenClassificationPipeline`:
 
 <img src="./assets/streamlit_01.png" alt="drawing" width="400"/>
