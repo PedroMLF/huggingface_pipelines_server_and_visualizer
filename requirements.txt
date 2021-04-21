@@ -2,6 +2,7 @@ black
 coverage
 fastapi
 gunicorn
+matplotlib
 mypy
 nox
 omegaconf

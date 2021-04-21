@@ -3,12 +3,12 @@ import requests
 from typing import Dict, List, Union
 
 import streamlit as st
+from matplotlib import cm
+from matplotlib.colors import rgb2hex
 from spacy_streamlit import visualize_ner
 from spacy.vocab import Vocab
 from spacy.tokens import Doc
 from spacy.tokens import Span
-
-COLORS = ["#ef5350", "#ffee58", "#81c784", "#64b5f6", "#ba68c8", "#b0bec5"]
 
 
 def write_header() -> None:
@@ -112,8 +112,9 @@ def print_predictions(
             doc.set_ents(spans)
 
             # Plot using spacy_streamlit
-            colors = {k: v for k, v in zip(labels, COLORS[: len(labels)])}
-            visualize_ner(doc, labels=labels, show_table=False, colors=colors)
+            # More cm options: https://matplotlib.org/stable/gallery/color/colormap_reference.html
+            colors_map = {label:rgb2hex(cm.tab20(i)) for i, label in enumerate(labels)}
+            visualize_ner(doc, labels=labels, show_table=False, colors=colors_map)
 
         elif pipeline_type == "Text Classification Pipeline":
             st.write('"_{}_" - **Prediction:** {}'.format(text, predictions[0]["label"]))
