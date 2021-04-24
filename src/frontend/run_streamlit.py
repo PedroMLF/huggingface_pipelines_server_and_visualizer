@@ -1,3 +1,4 @@
+import argparse
 import json
 import requests
 from typing import Dict, List, Union
@@ -113,7 +114,7 @@ def print_predictions(
 
             # Plot using spacy_streamlit
             # More cm options: https://matplotlib.org/stable/gallery/color/colormap_reference.html
-            colors_map = {label:rgb2hex(cm.tab20(i)) for i, label in enumerate(labels)}
+            colors_map = {label: rgb2hex(cm.tab20(i)) for i, label in enumerate(labels)}
             visualize_ner(doc, labels=labels, show_table=False, colors=colors_map)
 
         elif pipeline_type == "Text Classification Pipeline":
@@ -155,9 +156,12 @@ def main(predict_endpoint: str, tokenize_endpoint: str) -> None:
 
 
 if __name__ == "__main__":
-    ip = "127.0.0.1"
-    port = "8000"
+    parser = argparse.ArgumentParser(description="")
+    parser.add_argument("--ip", type=str, default="127.0.0.1", help="API Endpoint IP")
+    parser.add_argument("--port", type=str, default="8000", help="API Endpoint PORT")
+    args = parser.parse_args()
+
     url_base = "http://{}:{}/{}/"
-    predict_endpoint = url_base.format(ip, port, "predict")
-    tokenize_endpoint = url_base.format(ip, port, "tokenize")
+    predict_endpoint = url_base.format(args.ip, args.port, "predict")
+    tokenize_endpoint = url_base.format(args.ip, args.port, "tokenize")
     main(predict_endpoint=predict_endpoint, tokenize_endpoint=tokenize_endpoint)
