@@ -33,6 +33,7 @@ class TestBaselinePipeline:
         assert self.pipeline.tokenize_text("Example sentence!") == ["Example", "sentence", "!"]
         assert self.pipeline.tokenize_text("António Nunes!") == ["António", "Nunes", "!"]
         assert self.pipeline.tokenize_text("sgoiw dfdfer") == ["sgoiw", "dfdfer"]
+        assert self.pipeline.tokenize_text("## uaih .!!") == ["#", "#", "uaih", ".", "!", "!"]
 
     def test_map_all_np_keys(self):
         out = self.pipeline._map_all_np_keys(

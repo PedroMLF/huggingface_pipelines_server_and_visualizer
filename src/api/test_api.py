@@ -7,12 +7,7 @@ from omegaconf import OmegaConf
 from src.api.api import app
 from src.pipelines.utils import init_pipeline
 
-# Initialize pipeline model
-MODEL_NAME = "sshleifer/tiny-dbmdz-bert-large-cased-finetuned-conll03-english"
-PIPELINE_NAME = "TokenClassificationPipeline"
-config = OmegaConf.create({"pipeline": PIPELINE_NAME, "model": MODEL_NAME})
-pipeline = init_pipeline(config)
-
+# Initialize FastAPI TestClient
 client = TestClient(app)
 
 # Make tests async: https://fastapi.tiangolo.com/advanced/async-tests/
@@ -23,49 +18,15 @@ def test_predict():
     )
     assert response.status_code == 200
     response = response.json()
-    assert response["type"] == "Token Classification Pipeline"
-    assert response["model"] == "dslim/bert-base-NER"
-    assert response["predictions"][0]["entity_group"] == "LOC"
-    assert np.isclose(response["predictions"][0]["score"], 0.99, 0.1)
-    assert response["predictions"][0]["word"] == "Lisbon"
-    assert response["predictions"][0]["start"] == 0
-    assert response["predictions"][0]["end"] == 6
+    assert type(response["type"]) == str
+    assert type(response["model"]) == str
+    assert type(response["predictions"]) == list
 
 
-def test_tokenize_simple_sentence():
+def test_tokenize_sentence():
     response = client.post(
         "/tokenize/",
-        json={"text": "Test sentence with different parts and stuff."},
+        json={"text": "Test sentence and stuff."},
     )
     assert response.status_code == 200
-    assert response.json() == {
-        "tokens": ["Test", "sentence", "with", "different", "parts", "and", "stuff", "."]
-    }
-
-
-def test_tokenize_noisy_sentence():
-    response = client.post(
-        "/tokenize/",
-        json={"text": "Uma frase with several #### symbols!! uaihsdausi..!!"},
-    )
-    assert response.status_code == 200
-    assert response.json() == {
-        "tokens": [
-            "Uma",
-            "frase",
-            "with",
-            "several",
-            "#",
-            "#",
-            "#",
-            "#",
-            "symbols",
-            "!",
-            "!",
-            "uaihsdausi",
-            ".",
-            ".",
-            "!",
-            "!",
-        ]
-    }
+    assert response.json() == {"tokens": ["Test", "sentence", "and", "stuff", "."]}
