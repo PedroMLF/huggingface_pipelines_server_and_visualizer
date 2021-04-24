@@ -17,8 +17,17 @@ pipeline: "TokenClassificationPipeline"
 model: "dslim/bert-base-NER"
 ```
 
+**a) Server:**
 - Launch local server with: `./src/api/start.sh` .
+
+**b) Visualization:**
 - Run [streamlit](https://streamlit.io/) visualizer with: `streamlit run src/frontend/run_streamlit.py` .
+    - Requires local server to make requests to.
+
+**c) Prediction Only:**
+- Build predictions for a specific file using: `python predict.py config.yaml input_file.txt` .
+    - Saves all predictions in a json file.
+    - Does not require local server.
 
 ---
 
