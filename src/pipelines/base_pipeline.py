@@ -9,6 +9,23 @@ from src.custom_types import (
     RawPrediction,
 )
 
+# The task defining which pipeline will be returned. Currently accepted tasks are:
+# "feature-extraction": will return a FeatureExtractionPipeline.
+# "sentiment-analysis": will return a TextClassificationPipeline.
+# "ner": will return a TokenClassificationPipeline.
+# "question-answering": will return a QuestionAnsweringPipeline.
+# "fill-mask": will return a FillMaskPipeline.
+# "summarization": will return a SummarizationPipeline.
+# "translation_xx_to_yy": will return a TranslationPipeline.
+# "text2text-generation": will return a Text2TextGenerationPipeline.
+# "text-generation": will return a TextGenerationPipeline.
+# "zero-shot-classification:: will return a ZeroShotClassificationPipeline.
+# "conversational": will return a ConversationalPipeline.
+PIPELINE_TO_TASK_MAP = {
+    "TokenClassificationPipeline": "ner",
+    "TextClassificationPipeline": "sentiment-analysis",
+}
+
 
 class BasePipeline:
     def __init__(self, config: Union[DictConfig, ListConfig]):
@@ -19,10 +36,10 @@ class BasePipeline:
             config (Union[DictConfig, ListConfig]): OmegaConf config.
         """
         self.model = config.model
-        self.task = config.task
+        self.hf_pipeline = config.pipeline
 
         # Init pipeline
-        self.pipeline = pipeline(task=self.task, model=self.model)
+        self.pipeline = pipeline(task=PIPELINE_TO_TASK_MAP[self.hf_pipeline], model=self.model)
 
         # Get tokenizer
         self.tokenizer = self.pipeline.tokenizer

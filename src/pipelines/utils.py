@@ -23,17 +23,18 @@ def init_pipeline(
         config (Union[DictConfig, ListConfig]): OmegaConf config.
 
     Raises:
-        NotImplementedError: Raises error when using a non-implemented task.
+        NotImplementedError: Raises error when using a non-implemented
+        pipeline.
 
     Returns:
         Union[TextClassificationPipeline, TokenClassificationPipeline]:
         Instance of "full" pipeline.
     """
 
-    if config.task == "ner":
+    if config.pipeline == "TokenClassificationPipeline":
         logger.info("Initializing Token Classification pipeline...")
         pipeline = TokenClassificationPipeline(config)
-    elif config.task == "sentiment-analysis":
+    elif config.pipeline == "TextClassificationPipeline":
         logger.info("Initializing Text Classification pipeline...")
         pipeline = TextClassificationPipeline(config)
     else:

@@ -9,8 +9,8 @@ from src.pipelines.utils import init_pipeline
 
 # Initialize pipeline model
 MODEL_NAME = "sshleifer/tiny-dbmdz-bert-large-cased-finetuned-conll03-english"
-TASK_NAME = "ner"
-config = OmegaConf.create({"task": TASK_NAME, "model": MODEL_NAME})
+PIPELINE_NAME = "TokenClassificationPipeline"
+config = OmegaConf.create({"pipeline": PIPELINE_NAME, "model": MODEL_NAME})
 pipeline = init_pipeline(config)
 
 client = TestClient(app)

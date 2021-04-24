@@ -5,12 +5,12 @@ from omegaconf import OmegaConf
 from src.pipelines.base_pipeline import BasePipeline
 
 MODEL_NAME = "sshleifer/tiny-distilbert-base-cased"
-TASK_NAME = "ner"
+PIPELINE_NAME = "TokenClassificationPipeline"
 
 
 class TestBaselinePipeline:
     def setup_class(cls):
-        config = OmegaConf.create({"task": TASK_NAME, "model": MODEL_NAME})
+        config = OmegaConf.create({"pipeline": PIPELINE_NAME, "model": MODEL_NAME})
         cls.pipeline = BasePipeline(config)
 
     def teardown_class(cls):
@@ -19,8 +19,8 @@ class TestBaselinePipeline:
     def test_model_is_correct(self):
         assert self.pipeline.model == MODEL_NAME
 
-    def test_task_is_correct(self):
-        assert self.pipeline.task == TASK_NAME
+    def test_hf_pipeline_is_correct(self):
+        assert self.pipeline.hf_pipeline == PIPELINE_NAME
 
     def test_prefix_is_correct(self):
         assert self.pipeline.prefix == "##"
