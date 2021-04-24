@@ -2,7 +2,7 @@ from omegaconf import OmegaConf
 
 from src.pipelines.token_classification_pipeline import TokenClassificationPipeline
 
-MODEL_NAME = "sshleifer/tiny-dbmdz-bert-large-cased-finetuned-conll03-english"
+MODEL_NAME = "dslim/bert-base-NER"
 PIPELINE_NAME = "TokenClassificationPipeline"
 
 
@@ -24,3 +24,13 @@ class TestTokenClassificationPipeline:
         assert type(out[0]["score"]) == float
         assert type(out[0]["start"]) == int
         assert type(out[0]["end"]) == int
+
+    def test_call_with_diacritics(self):
+        out = self.pipeline("He is Doctor Úlmán Schütze.")
+        assert len(out) == 1
+        assert out[0]["word"] == "Úlmán Schütze"
+
+        out = self.pipeline("They are António Seráfim and Barack Obama!")
+        assert len(out) == 2
+        assert out[0]["word"] == "António Seráfim"
+        assert out[1]["word"] == "Barack Obama"
