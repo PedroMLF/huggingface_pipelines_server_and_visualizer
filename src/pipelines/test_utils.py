@@ -14,7 +14,7 @@ class TestUtils:
     def test_init_test_token_classification_pipeline(self):
         config = OmegaConf.create(
             {
-                "task": "ner",
+                "pipeline": "TokenClassificationPipeline",
                 "model": "sshleifer/tiny-dbmdz-bert-large-cased-finetuned-conll03-english",
             }
         )
@@ -24,7 +24,7 @@ class TestUtils:
     def test_init_test_text_classification_pipeline(self):
         config = OmegaConf.create(
             {
-                "task": "sentiment-analysis",
+                "pipeline": "TextClassificationPipeline",
                 "model": "sshleifer/tiny-distilbert-base-uncased-finetuned-sst-2-english",
             }
         )
@@ -32,6 +32,6 @@ class TestUtils:
         assert pipeline.pipeline_type == "Text Classification Pipeline"
 
     def test_invalid_init_raises_not_implemented_error(self):
-        config = OmegaConf.create({"task": "x", "model": "y"})
+        config = OmegaConf.create({"pipeline": "x", "model": "y"})
         with pytest.raises(NotImplementedError):
             pipeline = init_pipeline(config)

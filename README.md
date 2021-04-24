@@ -10,6 +10,13 @@ The goal of this project is to offer a simple local server and visualization too
 ### Usage
 
 - Create a virtualenv with python3.7+ and run `pip install -r requirements.txt`.
+- Modify the `config.yaml` file, by defining the appropriate pipeline and the corresponding model (refer to [Supported Pipelines](#supported-pipelines) for more details):
+
+```yaml
+pipeline: "TokenClassificationPipeline"
+model: "dslim/bert-base-NER"
+```
+
 - Launch local server with: `./src/api/start.sh` .
 - Run [streamlit](https://streamlit.io/) visualizer with: `streamlit run src/frontend/run_streamlit.py` .
 
@@ -17,11 +24,15 @@ The goal of this project is to offer a simple local server and visualization too
 
 ### Supported Pipelines
 
-| Task               | Pipeline | Hugging Face Hub Models |
-|:------------------:|:--------:|:----------------------:|
-| sentiment-analysis | TextClassificationPipeline | [Link](https://huggingface.co/models?pipeline_tag=text-classification) |
-| ner | TokenClassificationPipeline | [Link](https://huggingface.co/models?pipeline_tag=token-classification) |
+- The following table shows the supported types of pipelines by this project:
 
+
+| Pipeline                    | Hugging Face Hub Models                                                 |
+|:---------------------------:|:-----------------------------------------------------------------------:|
+| TextClassificationPipeline  | [Link](https://huggingface.co/models?pipeline_tag=text-classification)  |
+| TokenClassificationPipeline | [Link](https://huggingface.co/models?pipeline_tag=token-classification) |
+
+- One type of pipeline can be used to solve different tasks within the corresponding problem class, depending on the model selected from the Hugging Face Hub.
 
 ---
 
@@ -37,6 +48,8 @@ The goal of this project is to offer a simple local server and visualization too
 ### Visualizer
 
 - Implemented with [Streamlit](https://streamlit.io/), and with different visualizations according to the type of pipeline.
+- If necessary, modify `ip` and `port` to match `src/api/gunicorn_conf.py` by using:
+    - `streamlit run src/frontend/run_streamlit.py -- --port=80 --ip=0.0.0.0`
 - Example for the `TokenClassificationPipeline`:
 
 <img src="./assets/streamlit_01.png" alt="drawing" width="400"/>
@@ -52,7 +65,7 @@ The goal of this project is to offer a simple local server and visualization too
 
 #### Linting
 
-- Run `run_lint.sh` or `black . -l 99` .
+- Run `./run_lint.sh` or `black . -l 99` .
 
 #### Typing
 

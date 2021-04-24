@@ -3,12 +3,12 @@ from omegaconf import OmegaConf
 from src.pipelines.text_classification_pipeline import TextClassificationPipeline
 
 MODEL_NAME = "sshleifer/tiny-distilbert-base-uncased-finetuned-sst-2-english"
-TASK_NAME = "sentiment-analysis"
+PIPELINE_NAME = "TextClassificationPipeline"
 
 
 class TestTextClassificationPipeline:
     def setup_class(cls):
-        config = OmegaConf.create({"task": TASK_NAME, "model": MODEL_NAME})
+        config = OmegaConf.create({"pipeline": PIPELINE_NAME, "model": MODEL_NAME})
         cls.pipeline = TextClassificationPipeline(config)
 
     def teardown_class(cls):

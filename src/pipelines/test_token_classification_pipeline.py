@@ -3,12 +3,12 @@ from omegaconf import OmegaConf
 from src.pipelines.token_classification_pipeline import TokenClassificationPipeline
 
 MODEL_NAME = "sshleifer/tiny-dbmdz-bert-large-cased-finetuned-conll03-english"
-TASK_NAME = "ner"
+PIPELINE_NAME = "TokenClassificationPipeline"
 
 
 class TestTokenClassificationPipeline:
     def setup_class(cls):
-        config = OmegaConf.create({"task": TASK_NAME, "model": MODEL_NAME})
+        config = OmegaConf.create({"pipeline": PIPELINE_NAME, "model": MODEL_NAME})
         cls.pipeline = TokenClassificationPipeline(config)
 
     def teardown_class(cls):
