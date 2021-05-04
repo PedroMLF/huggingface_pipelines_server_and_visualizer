@@ -20,6 +20,12 @@ model: "dslim/bert-base-NER"
 **a) Server:**
 - Launch local server with: `./src/api/start.sh` .
 
+OR
+
+- `docker build -t api -f docker/api-py-37.dockerfile .` .
+- `docker container run --name api -p 80:80 api:latest` .
+
+
 **b) Visualization:**
 - Run [streamlit](https://streamlit.io/) visualizer with: `streamlit run src/frontend/run_streamlit.py` .
     - Requires local server to make requests to.
@@ -51,6 +57,7 @@ model: "dslim/bert-base-NER"
 - Follows [tiangolo's uvicorn-gunicorn-docker](https://github.com/tiangolo/uvicorn-gunicorn-docker) structure.
 - Supports all the environment variables described [here](https://github.com/tiangolo/uvicorn-gunicorn-docker#environment-variables).
     - To modify them locally do, e.g. `export MAX_WORKERS=2; ./src/api/start.sh` .
+    - To modify them when using docker do, e.g. `docker container run --name api -p 80:80 -e MAX_WORKERS="1" api:latest` .
 
 ---
 
