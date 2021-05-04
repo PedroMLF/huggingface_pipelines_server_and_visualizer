@@ -6,8 +6,8 @@ import multiprocessing
 import os
 
 # Define/Read network related variables
-host = os.getenv("HOST", "127.0.0.1")
-port = os.getenv("PORT", "8000")
+host = os.getenv("HOST", "0.0.0.0")
+port = os.getenv("PORT", "80")
 bind_env = os.getenv("BIND", None)
 use_bind = bind_env if bind_env else f"{host}:{port}"
 graceful_timeout = int(os.getenv("GRACEFUL_TIMEOUT", "120"))

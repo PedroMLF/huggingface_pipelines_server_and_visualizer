@@ -157,8 +157,8 @@ def main(predict_endpoint: str, tokenize_endpoint: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="")
-    parser.add_argument("--ip", type=str, default="127.0.0.1", help="API Endpoint IP")
-    parser.add_argument("--port", type=str, default="8000", help="API Endpoint PORT")
+    parser.add_argument("--ip", type=str, default="0.0.0.0", help="API Endpoint IP")
+    parser.add_argument("--port", type=str, default="80", help="API Endpoint PORT")
     args = parser.parse_args()
 
     url_base = "http://{}:{}/{}/"
