@@ -9,6 +9,8 @@ omegaconf
 pydantic
 pytest
 streamlit
+spacy
+spacy-streamlit
 torch
 transformers
 uvicorn[standard]
