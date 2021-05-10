@@ -12,9 +12,6 @@ RUN pip install -r /requirements.txt
 
 ENV PYTHONPATH=/src
 
-ARG MAX_WORKERS
-ENV MAX_WORKERS="$MAX_WORKERS"
-
 EXPOSE 80
 
 CMD ["/src/api/start.sh"]
