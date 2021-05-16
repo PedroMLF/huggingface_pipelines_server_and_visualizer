@@ -9,18 +9,14 @@ services:
       - api.env
     ports:
       - "80:80"
-    volumes:
-      - ./storage:/storage
 
-  streamlit:
+  frontend:
     build:
       context: ../
-      dockerfile: docker/streamlit-py-37.dockerfile
+      dockerfile: docker/frontend-py-37.dockerfile
     env_file:
-      - streamlit.env
+      - frontend.env
     ports:
       - "8501:8501"
     depends_on:
       - api
-    volumes:
-      - ./storage:/storage
