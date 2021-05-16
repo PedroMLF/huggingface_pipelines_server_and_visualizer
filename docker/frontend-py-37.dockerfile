@@ -1,6 +1,6 @@
 FROM python:3.7-slim
 
-COPY ./requirements.txt /requirements.txt
+COPY ./docker/frontend_requirements.txt /requirements.txt
 COPY ./src/frontend /src/frontend
 COPY ./src/pipelines /src/pipelines
 
