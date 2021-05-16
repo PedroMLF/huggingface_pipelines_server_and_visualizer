@@ -1,0 +1,4 @@
+matplotlib >= 3.4.*
+streamlit >= 0.79.*
+spacy >= 3.0.*
+spacy-streamlit >= 1.0.*

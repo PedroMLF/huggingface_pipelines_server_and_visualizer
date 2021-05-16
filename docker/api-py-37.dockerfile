@@ -1,7 +1,7 @@
 FROM python:3.7-slim
 
 COPY ./config.yaml /config.yaml
-COPY ./requirements.txt /requirements.txt
+COPY ./docker/api_requirements.txt /requirements.txt
 COPY ./src/api /src/api
 COPY ./src/pipelines /src/pipelines
 COPY ./src/custom_types.py /src/custom_types.py
