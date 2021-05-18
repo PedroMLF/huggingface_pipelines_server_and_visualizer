@@ -23,7 +23,7 @@ def text_input() -> str:
     Returns:
         str: User input string.
     """
-    text_input = st.text_input("Input a blob of text to be run through the API.")
+    text_input = st.text_area("Input a blob of text to be run through the API.", height=50)
     return text_input
 
 
