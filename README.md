@@ -3,7 +3,7 @@
 
 ### Description
 
-The goal of this project is to offer a simple local server and visualization tool around <a href=https://huggingface.co/transformers/main_classes/pipelines.html>Hugging Face Pipelines</a>. It uses [FastAPI](https://fastapi.tiangolo.com/) and [Streamlit](https://streamlit.io/).
+The goal of this project is to offer a simple local server and visualization tool around <a href=https://huggingface.co/transformers/main_classes/pipelines.html>Hugging Face Pipelines</a>. The way it is structured makes it useful to showcase models locally. It uses [FastAPI](https://fastapi.tiangolo.com/) and [Streamlit](https://streamlit.io/).
 
 ---
 
@@ -21,7 +21,6 @@ model: "dslim/bert-base-NER"
 - `docker-compose -f docker/py-37_compose.yaml build` .
 - `docker-compose -f docker/py-37_compose.yaml up` .
 - If necessary modify variables in each service's corresponding `.env` file.
-
 
 **b) Prediction Only:**
 - Build predictions for a specific file using: `python predict.py config.yaml input_file.txt` .
@@ -59,18 +58,20 @@ OR
 | TextClassificationPipeline  | [Link](https://huggingface.co/models?pipeline_tag=text-classification)  |
 | TokenClassificationPipeline | [Link](https://huggingface.co/models?pipeline_tag=token-classification) |
 
-- One type of pipeline can be used to solve different tasks within the corresponding problem class, depending on the model selected from the Hugging Face Hub.
+- The same type of pipeline can be used for different tasks within the corresponding problem class, depending on the model selected from the Hugging Face Hub (e.g. NER and POS for the TokenClassificationPipeline).
+
+- A path to a local model can be used, as long as it corresponds to a model of the same type (e.g. trained following the corresponding example as in [Hugging Face's repository](https://github.com/huggingface/transformers/tree/master/examples/pytorch)).
 
 ---
 
-### API:
+### API
 
 - Implemented with [FastAPI](https://fastapi.tiangolo.com/).
 - Follows [tiangolo's uvicorn-gunicorn-docker](https://github.com/tiangolo/uvicorn-gunicorn-docker) structure.
-- Supports all the environment variables described [here](https://github.com/tiangolo/uvicorn-gunicorn-docker#environment-variables).
+- Supports all the environment variables described [here](https://github.com/tiangolo/uvicorn-gunicorn-docker#environment-variables):
     - To modify them locally do, e.g. `export MAX_WORKERS=2; ./src/api/start.sh` .
     - To modify them when using docker do, e.g. `docker container run --name api -p 80:80 -e MAX_WORKERS="1" api:latest` .
-    - To modify them using docker-compose use the docker/api.env file.
+    - To modify them using docker-compose use the `docker/api.env` file.
 
 ---
 
